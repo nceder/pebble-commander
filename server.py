@@ -113,6 +113,4 @@ def list_commands():
 
 if __name__ == "__main__":
 	app.debug=DEBUG # enable debugging
-	#app.port=HTTP_PORT
-	#app.host=HTTP_HOST
-	app.run() # run the app
+	app.run(host=HTTP_HOST,port=HTTP_PORT) # run the app
