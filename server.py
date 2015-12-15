@@ -23,7 +23,7 @@ def listCommands(usehtml):
 	# start at -1 since python begins at 0, not 1
 	count = -1
 
-	# if html is enabled then start the list output with <ol> so we got an ordered list
+	# if html is enabled then create an html table
 	if usehtml == True: itemstext = "<table class=\"table\"><thead><tr><th>Title</th><th>Command</th></tr></thead><tbody>"
 
 	# put the items in a list
@@ -33,10 +33,10 @@ def listCommands(usehtml):
 			# use html output mode
 			itemstext = itemstext + '<tr><td><a href="/exec/' + AUTH_KEY + '/' + str(count) + '">' + item["title"] + '</a></td><td><code>' + item["command"] + '</code></td></tr>\n'
 		else:
-			# don't use html output mode
+			# don't use html output mode. probably will be replaced with json instead of plaintext
 			itemstext = itemstext + str(count) + ": " + item["title"] + " | " + item["command"] + " \n"
 
-	# if html is enabled, end the ordered html list
+	# if html is enabled, end the table
 	if usehtml == True: itemstext += "</tbody></table>"
 
 	return itemstext
@@ -81,7 +81,8 @@ def currentSettings():
 		output += "disabled"
 	output +="</p>"
 	return output
-# Home page
+
+# App Home page
 @app.route("/")
 def index():
 	return render_template('index.html', settings=Markup(currentSettings()))
@@ -105,7 +106,7 @@ def commandr(authkey,command_id):
 
 	return Response(ResponseText, mimetype='text/plain')
 
-# Administration panel. Pass key to log in for now
+# Page that lists all commands
 @app.route("/list_commands")
 def list_commands():
 	return render_template("commands.html", commands=Markup(listCommands(True)))
