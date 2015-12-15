@@ -1,0 +1,13 @@
+{
+	"__comment__": "See README.md for a set up guide.",
+	"host": "0.0.0.0",
+	"port": 5000,
+	"debug_mode": false,
+    "show_output": true,
+    "auth_key": "cbr674",
+    "commands":[
+        {"title": "Install Gentoo", "command": "ls -la"},
+        {"title": "Toggle MPD", "command": "mpc toggle"},
+        {"title": "Start Subsonic", "command": "echo nope just an example"}
+   ]
+}
