@@ -1,5 +1,5 @@
 import random, subprocess, json
-from flask import Flask,Response,render_template,Markup
+from flask import Flask,Response,render_template,Markup,jsonify
 app = Flask(__name__)
 
 # Load json file
@@ -14,31 +14,18 @@ HTTP_HOST = JSONData["host"]
 HTTP_PORT = int(JSONData["port"])
 
 #### FUNCTIONS ####
-def listCommands(usehtml):
+def listCommands():
 	""" Lists all commands in a list. """
-	global JSONData
-	
-	itemstext = ""
-
 	# start at -1 since python begins at 0, not 1
 	count = -1
-
-	# if html is enabled then create an html table
-	if usehtml == True: itemstext = "<table class=\"table\"><thead><tr><th>Title</th><th>Command</th></tr></thead><tbody>"
+	itemstext = "<table class=\"table\"><thead><tr><th>Title</th><th>Command</th></tr></thead><tbody>"
 
 	# put the items in a list
 	for item in JSONData["commands"]:
 		count = count + 1
-		if usehtml == True:
-			# use html output mode
-			itemstext = itemstext + '<tr><td><a href="/exec/' + AUTH_KEY + '/' + str(count) + '">' + item["title"] + '</a></td><td><code>' + item["command"] + '</code></td></tr>\n'
-		else:
-			# don't use html output mode. probably will be replaced with json instead of plaintext
-			itemstext = itemstext + str(count) + ": " + item["title"] + " | " + item["command"] + " \n"
+		itemstext = itemstext + '<tr><td><a href="/exec/' + AUTH_KEY + '/' + str(count) + '">' + item["title"] + '</a></td><td><code>' + item["command"] + '</code></td></tr>\n'
 
-	# if html is enabled, end the table
-	if usehtml == True: itemstext += "</tbody></table>"
-
+	itemstext += "</tbody></table>"
 	return itemstext
 
 def runCommandFromList(command):
@@ -109,7 +96,7 @@ def commandr(authkey,command_id):
 # Page that lists all commands
 @app.route("/list_commands")
 def list_commands():
-	return render_template("commands.html", commands=Markup(listCommands(True)))
+	return render_template("commands.html", commands=Markup(listCommands()))
 
 if __name__ == "__main__":
 	app.debug=DEBUG # enable debugging
