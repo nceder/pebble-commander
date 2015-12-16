@@ -28,10 +28,6 @@ def listCommands():
 	itemstext += "</tbody></table>"
 	return itemstext
 
-# list commands as json for the pebble app
-def listCommandsAsJSON():
-	return json.dumps(JSONData["commands"])
-
 
 def runCommandFromList(command):
 	""" Executes a command from a list/tuple of commands. """
