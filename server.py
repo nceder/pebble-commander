@@ -28,6 +28,11 @@ def listCommands():
 	itemstext += "</tbody></table>"
 	return itemstext
 
+# list commands as json for the pebble app
+def listCommandsAsJSON():
+	return json.dumps(JSONData["commands"])
+
+
 def runCommandFromList(command):
 	""" Executes a command from a list/tuple of commands. """
 
@@ -93,10 +98,24 @@ def commandr(authkey,command_id):
 
 	return Response(ResponseText, mimetype='text/plain')
 
-# Page that lists all commands
+# Page that lists all commands as HTML
 @app.route("/list_commands")
 def list_commands():
 	return render_template("commands.html", commands=Markup(listCommands()))
+
+# Page that sends the JSON file so the pebble can read it
+@app.route("/send_json/<authkey>")
+def send_json(authkey):
+	# verify authentication key
+	if authkey == AUTH_KEY:
+		# auth key is correct, display file.
+		with open("settings.json", "r") as jsonfile:
+			ResponseText = jsonfile.read()
+	else:
+		ResponseText = "ERROR: Incorrect authentication key."
+	
+	# return response as PLAIN TEXT.
+	return Response(ResponseText, mimetype='text/plain')
 
 if __name__ == "__main__":
 	app.debug=DEBUG # enable debugging
