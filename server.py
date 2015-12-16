@@ -1,4 +1,4 @@
-import random, subprocess, json
+import subprocess, json
 from flask import Flask,Response,render_template,Markup,jsonify
 app = Flask(__name__)
 
@@ -15,7 +15,7 @@ HTTP_PORT = int(JSONData["port"])
 
 #### FUNCTIONS ####
 def listCommands():
-	""" Lists all commands in a list. """
+	""" Lists all commands in a json file as an HTML Table """
 	# start at -1 since python begins at 0, not 1
 	count = -1
 	itemstext = "<table class=\"table\"><thead><tr><th>Title</th><th>Command</th></tr></thead><tbody>"
@@ -27,6 +27,15 @@ def listCommands():
 
 	itemstext += "</tbody></table>"
 	return itemstext
+
+def listCommandsAsJSON():
+	""" Lists all commands in the json file as json """
+	count = -1
+	for item in JSONData["commands"]:
+		count = count + 1
+		JSONData["commands"][count]["id"] = count
+	
+	return json.dumps(JSONData["commands"], sort_keys=True, indent=4, separators=(',', ': '))
 
 
 def runCommandFromList(command):
@@ -105,13 +114,16 @@ def send_json(authkey):
 	# verify authentication key
 	if authkey == AUTH_KEY:
 		# auth key is correct, display file.
-		with open("settings.json", "r") as jsonfile:
-			ResponseText = jsonfile.read()
+		#with open("settings.json", "r") as jsonfile:
+		#	ResponseText = jsonfile.read()
+		ResponseText = listCommandsAsJSON()
+
 	else:
 		ResponseText = "ERROR: Incorrect authentication key."
 	
 	# return response as PLAIN TEXT.
 	return Response(ResponseText, mimetype='text/plain')
+
 
 if __name__ == "__main__":
 	app.debug=DEBUG # enable debugging

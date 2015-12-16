@@ -6,8 +6,9 @@
 	"show_output": true,
 	"auth_key": "cbr674",
 	"commands":[
-		{"title": "Install Gentoo", "command": "ls -la"},
-		{"title": "Toggle MPD", "command": "mpc toggle"},
-		{"title": "Start Subsonic", "command": "echo nope just an example"}
+		{"title": "Steam big picture", "command": "steam -bigpicture &"},
+		{"title": "Toggle music", "command": "mpc toggle"},
+		{"title": "Start Kodi", "command": "kodi &"},
+		{"title": "Start chromium", "command": "chromium"}
 	]
 }
