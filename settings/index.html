@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Pebble Commander settings</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<style>
+		.center { text-align: center; }
+		h1 {margin: 0px; }
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="well well-sm">
+		<h1 class="center">Pebble Commander settings</h1>
+	</div>
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label for="CommanderServer" class="col-xs-3 control-label">Server IP:</label>
+			<div class="col-xs-9"><input type="text" name="CS" id="CommanderServer" class="form-control"></div>
+		</div>
+		<div class="form-group">
+			<label for="CommanderPort" class="col-xs-3 control-label">Server Port:</label>
+			<div class="col-xs-9"><input type="text" name="CP" id="CommanderPort" class="form-control"></div>
+		</div>
+		<div class="form-group">
+			<div class="col-xs-offset-3 col-xs-9">
+				<button type="button" class="btn btn-primary" id="submitButton">Send to pebble</button>
+			</div>
+		</div>
+	</form>
+</div>
+  <script>
+  function getConfigData() {
+    var serverIP = document.getElementById('CommanderServer');
+    var serverPort = document.getElementById('CommanderPort');
+ 
+    var options = {
+      'server': CommanderServer.value,
+      'port': CommanderPort.value
+    };
+
+    // Save for next launch
+    localStorage['server'] = options['server'];
+    localStorage['port'] = options['port'];
+
+    console.log('Got options: ' + JSON.stringify(options));
+    return options;
+  }
+
+  function getQueryParam(variable, defaultValue) {
+    var query = location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+      var pair = vars[i].split('=');
+      if (pair[0] === variable) {
+        return decodeURIComponent(pair[1]);
+      }
+    }
+    return defaultValue || false;
+  }
+ 
+  var submitButton = document.getElementById('submit_button');
+  submitButton.addEventListener('click', function() {
+    console.log('Submit');
+
+    // Set the return URL depending on the runtime environment
+    var return_to = getQueryParam('return_to', 'pebblejs://close#');
+    document.location = return_to + encodeURIComponent(JSON.stringify(getConfigData()));
+  });
+
+  (function() {
+    var serverIP = document.getElementById('CommanderServer');
+    var serverPort = document.getElementById('CommanderPort');
+
+    // Load any previously saved configuration, if available
+    if(localStorage['server']) {
+      CommanderServer.value = JSON.parse(localStorage['server']);
+      CommanderPort.value = localStorage['port'];
+    }
+  })();
+  </script>
+</body>
+</html>
