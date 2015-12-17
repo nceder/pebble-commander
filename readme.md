@@ -14,4 +14,6 @@ Configuration is done in `settings.json`. Documentation on this will be done lat
 
 ## Pebble app
 
-The pebble app is not currently on the pebble app store at this time. In the meantime you'll have to import it into [CloudPebble](https://cloudpebble.net). I'll get the app on the app store ASAP.
+The Pebble app is available for download on the [Pebble App store](https://apps.getpebble.com/en_US/application/5672298346ebacd2e6000082).
+
+If you want to, you can also import the app's source code into [CloudPebble](https://cloudpebble.net) and toy around with it.
