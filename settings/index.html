@@ -7,79 +7,63 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<style>
 		.center { text-align: center; }
-		h1 {margin: 0px; }
 	</style>
 </head>
 <body>
 <div class="container">
-	<div class="well well-sm">
-		<h1 class="center">Pebble Commander settings</h1>
-	</div>
+	<h1 class="center page-header">Pebble Commander settings</h1>
+	
 	<form class="form-horizontal">
 		<div class="form-group">
 			<label for="CommanderServer" class="col-xs-3 control-label">Server IP:</label>
 			<div class="col-xs-9"><input type="text" name="CS" id="CommanderServer" class="form-control"></div>
 		</div>
+		<div class="col-xs-offset-3 col-xs-9">
+			<p><strong>Note:</strong> For the server IP, omit the <code>http://</code>. Example: <code>192.168.0.3:5000</code></p>
+		</div>
+		
 		<div class="form-group">
-			<label for="CommanderPort" class="col-xs-3 control-label">Server Port:</label>
-			<div class="col-xs-9"><input type="text" name="CP" id="CommanderPort" class="form-control"></div>
+			<label for="AuthKey" class="col-xs-3 control-label">Auth key:</label>
+			<div class="col-xs-9"><input type="text" name="CP" id="AuthKey" class="form-control"></div>
+		</div>
+		<div class="form-group">
+			<label for="outputMode" class="col-xs-3 control-label">Command output:</label>
+			<div class="col-xs-9"><input type="checkbox" value="true" id="outputMode" class="form-control"></div>
 		</div>
 		<div class="form-group">
 			<div class="col-xs-offset-3 col-xs-9">
-				<button type="button" class="btn btn-primary" id="submit_button">Send to pebble</button>
+				<input type="button" class="btn btn-primary" id="submit_button" value="Send to Pebble">
 			</div>
 		</div>
 	</form>
+
+	<div class="panel panel-warning">
+		<div class="panel-body bg-warning">
+			When you have changed the settings, please restart the app on the pebble for them to go into affect.
+		</div>
+	</div>
 </div>
-  <script>
-  function getConfigData() {
-    var serverIP = document.getElementById('CommanderServer');
-    var serverPort = document.getElementById('CommanderPort');
- 
-    var options = {
-      'server': CommanderServer.value,
-      'port': CommanderPort.value
-    };
 
-    // Save for next launch
-    localStorage['server'] = options['server'];
-    localStorage['port'] = options['port'];
+<!-- send settings to pebble -->
+<script>
 
-    console.log('Got options: ' + JSON.stringify(options));
-    return options;
-  }
 
-  function getQueryParam(variable, defaultValue) {
-    var query = location.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=');
-      if (pair[0] === variable) {
-        return decodeURIComponent(pair[1]);
-      }
-    }
-    return defaultValue || false;
-  }
- 
-  var submitButton = document.getElementById('submit_button');
-  submitButton.addEventListener('click', function() {
-    console.log('Submit');
+function sendData() {
+	var serverIP = document.getElementById("CommanderServer").value;
+	var authKey = document.getElementById("AuthKey").value;
+	var outputMode = document.getElementById("outputMode").checked;
+	var options = {
+		server: serverIP,
+		authkey: authKey,
+		commandoutput: outputMode
+	}
+	document.location = 'pebblejs://close#' + encodeURIComponent(JSON.stringify(options));
+}
 
-    // Set the return URL depending on the runtime environment
-    var return_to = getQueryParam('return_to', 'pebblejs://close#');
-    document.location = return_to + encodeURIComponent(JSON.stringify(getConfigData()));
-  });
-
-  (function() {
-    var serverIP = document.getElementById('CommanderServer');
-    var serverPort = document.getElementById('CommanderPort');
-
-    // Load any previously saved configuration, if available
-    if(localStorage['server']) {
-      CommanderServer.value = JSON.parse(localStorage['server']);
-      CommanderPort.value = localStorage['port'];
-    }
-  })();
-  </script>
+submitButton = document.getElementById('submit_button');
+submitButton.addEventListener('click', function() {
+	sendData();
+});
+</script>
 </body>
 </html>
