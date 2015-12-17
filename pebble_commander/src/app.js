@@ -2,9 +2,15 @@ var UI = require('ui');
 var ajax = require('ajax');
 var Settings = require('settings');
 
-// APP SETTINGS
-//var CONTROL_URL = "http://df87ad53.ngrok.io/";
-//var AUTH_KEY = "cbr674";
+
+// get pebble revision
+if(Pebble.getActiveWatchInfo) {
+	var watchinfo= Pebble.getActiveWatchInfo();
+	var platform=watchinfo.platform;
+} else {
+	platform="aplite";
+}
+
 
 // Set a configurable with the open callback
 Settings.config(
@@ -17,9 +23,11 @@ Settings.config(
 	}
 );
 
+
 var CONTROL_URL = Settings.option('server'); 
-var AUTH_KEY = Settings.option('port');
+var AUTH_KEY = Settings.option('authkey');
 var OUTPUT_MODE = Settings.option('commandoutput');
+
 
 // Initial window
 var initWindow = new UI.Card({
@@ -35,7 +43,10 @@ if (!CONTROL_URL || !AUTH_KEY) {
 	// App not configured
 	initWindow.title("App not configured");
 	initWindow.body("Enter in the server IP and password on your phone. When done, restart this app.");
-	initWindow.backgroundColor('red');
+	
+	if (platform == 'basalt') {
+		initWindow.backgroundColor('red');
+	}
   
 	//when you press the select button, restart the app
 	initWindow.on('select', function(event) {
@@ -92,7 +103,9 @@ function runApp() {
 					{
 						detailCard.body("");
 					}
-					detailCard.backgroundColor("green");
+					if (platform == 'basalt') {
+						detailCard.backgroundColor('green');
+					}
 					
 					// hide this after 2 seconds and return to the menu
 					setTimeout(function() {detailCard.hide(); commandMenu.show();}, 2000);
@@ -101,7 +114,9 @@ function runApp() {
 					detailCard.title("Data retrieval failed");
 					detailCard.body(error);
 					detailCard.subtitle("");
-					detailCard.backgroundColor('red');
+					if (platform == 'basalt') {
+						detailCard.backgroundColor('red');
+					}
 				});
 			});
 		},
@@ -109,8 +124,10 @@ function runApp() {
 			console.log('Ajax failed: ' + error);
 			initWindow.title('Data retrieval failed');
 			initWindow.body(error);
-			initWindow.backgroundColor('red');
-			initWindow.textColor('black');
+			if (platform == 'basalt') {
+				initWindow.backgroundColor('red');
+				initWindow.textColor('black');
+			}
 		}
 	);
 }

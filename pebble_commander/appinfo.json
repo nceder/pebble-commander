@@ -3,7 +3,7 @@
     "capabilities": [
         "configurable"
     ],
-    "companyName": "mrtux.org labs",
+    "companyName": "mrtux@riseup.net",
     "longName": "Pebble Commander",
     "projectType": "pebblejs",
     "resources": {
@@ -39,7 +39,7 @@
     ],
     "uuid": "0e21144a-7aa3-4c63-a6df-70febaf35e07",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "watchapp": {
         "hiddenApp": false,
         "watchface": false
