@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+	<title>Running Banished on Arch Linux - Pebble Commander</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/Custom.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+</head>
+<body>
+	<!-- navbar BEGIN -->
+	<nav class="navbar navbar-fixed-top navbar-inverse topnav">
+	  <div class="container topnav">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand topnav" href="index.html">Pebble Commander</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse navbar-right">
+		  <ul class="nav navbar-nav">
+		  	
+<li><a href="/index.html">Home</a></li>
+<li><a href="/docs.html">Documentation</a></li>
+<li><a href="https://github.com/c0decat/pebble-commander/">GitHub</a></li>
+
+		  </ul>
+		</div>
+	  </div>
+	</nav>
+	<!-- navbar END -->
+
+	<!-- content BEGIN -->
+	<h1 class="page-title">Running Banished on Arch Linux</h1>
+<div class="page-description">Posted on 25 Nov 2015</div>
+<div class="page-content">
+	<p>I recently installed a SSD in my laptop and decided I’d finally do away with Windows once and for all. It was great, and everything was going smoothly until I decided I’d like to play a few Windows-only titles. Banished happened to be one of them, however it seems to have good support on Wine (as you can see <a href="http://banished-wiki.com/wiki/Tutorials/Banished_on_Mac_and_Linux">here</a>), but I was having a hard time getting audio to work.</p>
+
+<p>Here are the steps I took to install Banished on my Arch Linux x86_64 installation:</p>
+
+<ol>
+  <li>
+    <p>Install playonlinux with your favorite package manager, along with the 32 bit versions of <code>libpulse</code> and <code>openal</code></p>
+
+    <p><code>pacman -S playonlinux lib32-libpulse lib32-openal</code></p>
+  </li>
+  <li>
+    <p>Create a new <strong>32 bit</strong> wine prefix.</p>
+  </li>
+  <li>
+    <p>Install the plugins <code>xact</code> and <code>d3dx9</code></p>
+  </li>
+  <li>
+    <p>Download Steam for Windows <a href="https://steamcdn-a.akamaihd.net/client/installer/SteamSetup.exe">here</a> and run it with PlayOnLinux</p>
+  </li>
+  <li>
+    <p>Install Banished like you normally would. However, when the game finishes downloading exit steam and create a shortcut to Steam.exe.</p>
+  </li>
+  <li>
+    <p>Run steam and then you can play banished.</p>
+  </li>
+</ol>
+
+</div>
+
+
+	<!-- content END -->
+
+</body>
+</html>

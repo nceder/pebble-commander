@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+	<title>Documentation - Pebble Commander</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/Custom.css">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	
+</head>
+<body>
+	<!-- navbar BEGIN -->
+	<nav class="navbar navbar-fixed-top navbar-inverse topnav">
+	  <div class="container topnav">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand topnav" href="index.html">Pebble Commander</a>
+		</div>
+		<div id="navbar" class="collapse navbar-collapse navbar-right">
+		  <ul class="nav navbar-nav">
+		  	
+<li><a href="/index.html">Home</a></li>
+<li class='active'><a href="/docs.html">Documentation</a></li>
+<li><a href="https://github.com/c0decat/pebble-commander/">GitHub</a></li>
+
+		  </ul>
+		</div>
+	  </div>
+	</nav>
+	<!-- navbar END -->
+
+	<!-- content BEGIN -->
+	<div class="container content-container">
+	<h1 class="page-title">Documentation</h1>
+	<div class="page-content">
+		<h2 id="a-note">A note</h2>
+
+<p>This is a rough guide on how to install Commander for Pebble. It will walk you through the installation and configuration of the server, plus setting up the app.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p><strong>Requirements:</strong></p>
+
+<ul>
+  <li>A python 2 installation. Your linux distro most likely already has this (or it could even be installed.)</li>
+  <li>Git</li>
+  <li>Python <code>pip</code> for installing programs</li>
+  <li>Flask</li>
+  <li>Some time</li>
+</ul>
+
+<h3 id="installing-the-required-modules">Installing the required modules</h3>
+
+<ul>
+  <li><strong>Package manager install</strong> You have 2 options for this. Option #1 is to install flask with your distro’s package manager. If this is what you want to do, install the <strong>python 2</strong> version of Flask. When done, continue to the next step.</li>
+  <li><strong>Pip method:</strong> This method will work if you don’t want to use your distro’s packaged version of Flask. To install flask with pip, gain a root shell and type <code>pip install flask</code>. If you don’t want to have flask system-wide, do <code>pip --user install flask</code></li>
+</ul>
+
+<h2 id="setting-up-the-server">Setting up the server</h2>
+
+<p>Run these commands:</p>
+
+<pre><code>git clone https://github.com/c0decat/pebble-commander.git
+cd pebble-commander
+nano settings.json
+</code></pre>
+
+<p>In <code>settings.json</code>, you are able to configure the server.</p>
+
+<p><img src="settings.json.png" alt="nano settings.json" /></p>
+
+<h3 id="explanation-of-the-config-file">Explanation of the config-file</h3>
+
+<p>The config file is plain JSON. You shouldn’t have any problem setting this up if you have used JSON before. If not, basically if you use commas correctly, you’ll be fine.</p>
+
+<ul>
+  <li><strong><code>host</code>:</strong> The IP the server will run on. Leave this as-is.</li>
+  <li><strong><code>port</code>:</strong> The port you want the server to run on.</li>
+  <li><strong><code>debug_mode</code>:</strong> Debug mode is for testing the server code. You might want to disable this.</li>
+  <li><strong><code>show_output</code>:</strong> Shows the command output when you run a command from the app. This can also be set in the pebble app but it’s overriden here.</li>
+  <li><strong><code>auth_key</code>:</strong> The password you use to access the server. This adds a security safeguard to stop unauthorized use of the server.</li>
+  <li><strong><code>commands</code>:</strong> A list of commands that you can execute from your Pebble™.</li>
+</ul>
+
+<p>Once you are done configuring the server, run <code>python2 server.py</code> and go to <a href="http://localhost:5000">http://localhost:5000</a>. You should get a welcome page. If you get it all is good on the server side.</p>
+
+
+	</div>
+</div>
+
+
+	<!-- content END -->
+
+</body>
+</html>
