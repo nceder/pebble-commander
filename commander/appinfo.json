@@ -4,7 +4,7 @@
         "configurable"
     ],
     "companyName": "mrtux@riseup.net",
-    "longName": "Pebble Commander",
+    "longName": "Commander for Pebble",
     "projectType": "pebblejs",
     "resources": {
         "media": [
@@ -32,14 +32,14 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "Pebble Commander",
+    "shortName": "Commander",
     "targetPlatforms": [
         "aplite",
         "basalt"
     ],
     "uuid": "0e21144a-7aa3-4c63-a6df-70febaf35e07",
     "versionCode": 1,
-    "versionLabel": "1.1",
+    "versionLabel": "1.2",
     "watchapp": {
         "hiddenApp": false,
         "watchface": false
