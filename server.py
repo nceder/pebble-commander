@@ -1,5 +1,5 @@
 import subprocess, json
-from flask import Flask,Response,render_template,Markup,jsonify
+from flask import Flask,Response,Markup
 app = Flask(__name__)
 
 # Load json file
@@ -14,20 +14,6 @@ HTTP_HOST = JSONData["host"]
 HTTP_PORT = int(JSONData["port"])
 
 #### FUNCTIONS ####
-def listCommands():
-	""" Lists all commands in a json file as an HTML Table """
-	# start at -1 since python begins at 0, not 1
-	count = -1
-	itemstext = "<table class=\"table\"><thead><tr><th>Title</th><th>Command</th></tr></thead><tbody>"
-
-	# put the items in a list
-	for item in JSONData["commands"]:
-		count = count + 1
-		itemstext = itemstext + '<tr><td><a href="/exec/' + AUTH_KEY + '/' + str(count) + '">' + item["title"] + '</a></td><td><code>' + item["command"] + '</code></td></tr>\n'
-
-	itemstext += "</tbody></table>"
-	return itemstext
-
 def listCommandsAsJSON():
 	""" Lists all commands in the json file as json """
 	count = -1
@@ -35,6 +21,7 @@ def listCommandsAsJSON():
 		count = count + 1
 		JSONData["commands"][count]["id"] = count
 	
+	# Return the json
 	return json.dumps(JSONData["commands"], sort_keys=True, indent=4, separators=(',', ': '))
 
 
@@ -65,24 +52,27 @@ def runCommandFromList(command):
 		subprocess.call(split)
 
 # Settings preview
-def currentSettings():
-	output = "<p><strong>Debugging:</strong> "
-	if DEBUG == True:
-		output += "enabled"
+def getSetting(setting):
+	if setting == "debug":
+		if DEBUG == True:
+			output = "enabled"
+		else:
+			output = "disabled"
+	elif setting == "showoutput":
+		if SHOW_OUTPUT == True:
+			output = "enabled"
+		else:
+			output = "disabled"
 	else:
-		output += "disabled"
-	output += "<br><strong>Command output:</strong> "
-	if SHOW_OUTPUT == True:
-		output += "enabled"
-	else:
-		output += "disabled"
-	output +="</p>"
+			output = "Invalid setting"
 	return output
 
 # App Home page
 @app.route("/")
 def index():
-	return render_template('index.html', settings=Markup(currentSettings()))
+	IndexText = "Commander web server\nSee documentation for information.\n\nSettings:\nDebug mode is " + getSetting('debug')
+	IndexText += "\nCommand output is " + getSetting('showoutput')
+	return Response(IndexText, mimetype='text/plain')
 
 # Run commands
 @app.route("/exec/<authkey>/<int:command_id>")
@@ -102,11 +92,6 @@ def commandr(authkey,command_id):
 		ResponseText += "ERROR: Incorrect authentication key."
 
 	return Response(ResponseText, mimetype='text/plain')
-
-# Page that lists all commands as HTML
-@app.route("/list_commands")
-def list_commands():
-	return render_template("commands.html", commands=Markup(listCommands()))
 
 # Page that sends the JSON file so the pebble can read it
 @app.route("/send_json/<authkey>")
