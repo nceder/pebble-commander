@@ -1,7 +1,7 @@
 var UI = require('ui');
 var ajax = require('ajax');
 var Settings = require('settings');
-
+var Voice = require("ui/voice");
 
 // get pebble revision
 if(Pebble.getActiveWatchInfo) {
@@ -10,7 +10,6 @@ if(Pebble.getActiveWatchInfo) {
 } else {
 	platform="aplite";
 }
-
 
 // Set a configurable with the open callback
 Settings.config(
@@ -28,7 +27,7 @@ var CONTROL_URL = Settings.option('server');
 var AUTH_KEY = Settings.option('authkey');
 var OUTPUT_MODE = Settings.option('commandoutput');
 
-var APP_VERSION = "1.2";
+var APP_VERSION = "1.3";
 var ABOUT_TEXT = "Author: Colin Murphy (mrtux@riseup.net)\n\nWebsite: www.mrtux.org/projects/commander";
 
 // Initial window
@@ -62,7 +61,53 @@ else
 }
 
 
+function sendCommand(id, name) {
+	// Show a card showing that the command was executed
+	var detailCard = new UI.Card({
+		backgroundColor: 'white',
+		textColor: 'black',
+		style: 'small',
+		scrollable: true,
+		title: name,
+		subtitle: "Sending command to server",
+		body: ""
+	});
+
+	// Show the new Card
+	detailCard.show();
+	
+	ajax({url: 'http://' + CONTROL_URL + "/exec/" + AUTH_KEY + "/" + id, type: 'plain'},
+		function (data) {
+			detailCard.subtitle("Command sent");
+			if (OUTPUT_MODE === true) {
+				detailCard.body(data);
+			}
+			else
+			{
+				detailCard.body("");
+			}
+			if (platform == 'basalt') {
+				detailCard.backgroundColor('green');
+			}
+
+			// hide this after 2 seconds and return to the menu
+			setTimeout(function() {detailCard.hide();}, 2000);
+		},
+		function (error) {
+			detailCard.title("Data retrieval failed");
+			detailCard.body(error);
+			detailCard.subtitle("");
+			if (platform == 'basalt') {
+				detailCard.backgroundColor('red');
+			}
+		}
+	);
+}
+
+
+
 function runApp() {
+	
 	ajax({url: 'http://' + CONTROL_URL + "/send_json/" + AUTH_KEY, type: 'json'},
 		function(json) {
 			// Data retrieval worked, hide this and show the menu!
@@ -71,7 +116,10 @@ function runApp() {
 				textColor: 'black',
 				highlightBackgroundColor: 'blue',
 				highlightTextColor: 'white',
+				fullscreen: false,
 				sections: [{
+					items: [{"title": "Voice command", "subtitle": "Select then talk"}]	
+				},{
 					title: 'Commands',
 					items: json
 				},{
@@ -82,56 +130,42 @@ function runApp() {
 					]
 				}]
 			});
+			
 			commandMenu.show();
 			initWindow.hide();
-		
+			
 			// Add a click listener for select button click
 			commandMenu.on('select', function(event) {
 				console.log('Selected item #' + event.itemIndex + ' of section #' + event.sectionIndex);
 				console.log('The item is titled "' + event.item.title + '"');
 				
-				// If the item selected is in the FIRST list, it is a command.
-				if (event.sectionIndex === 0 ) {
-					// Show a card showing that the command was executed
-					var detailCard = new UI.Card({
-						backgroundColor: 'white',
-						textColor: 'black',
-						style: 'small',
-						scrollable: true,
-						title: json[event.itemIndex].title,
-						subtitle: "Sending command to server",
-						body: ""
-					});
-
-					// Show the new Card
-					detailCard.show();
-
-					ajax({url: 'http://' + CONTROL_URL + "/exec/" + AUTH_KEY + "/" + json[event.itemIndex].id, type: 'plain'},
-						function (data) {
-							detailCard.subtitle("Command sent");
-							if (OUTPUT_MODE === true) {
-								detailCard.body(data);
-							}
-							else
-							{
-								detailCard.body("");
-							}
-							if (platform == 'basalt') {
-								detailCard.backgroundColor('green');
-							}
-
-							// hide this after 2 seconds and return to the menu
-							setTimeout(function() {detailCard.hide(); commandMenu.show();}, 2000);
-						},
-						function (error) {
-							detailCard.title("Data retrieval failed");
-							detailCard.body(error);
-							detailCard.subtitle("");
-							if (platform == 'basalt') {
-								detailCard.backgroundColor('red');
+				// Item index 0 (list 1) is the voice command option
+				if (event.sectionIndex === 0) {
+					commandMenu.fullscreen(false);
+					
+					// Dictate voice then run the command if it worked out
+					Voice.dictate('start', true, function(e) {
+						if (e.err) {
+							console.log('Error: ' + e.err);
+							return;
+						}
+						console.log('Transcription: ' + e.transcription);
+						
+						// search for the name in the list of commands
+						for (var i = 0; i < json.length; i++){
+							if (json[i].title == e.transcription) {
+								var voiceCommand = json[i].id;
+								console.log('Voice command: ' + voiceCommand);
+								sendCommand(voiceCommand, json[i].title);
 							}
 						}
-					);
+					});
+
+				}
+				// If the item is in the 2nd list, its a command
+				else if (event.sectionIndex === 1 ) {
+					commandMenu.fullscreen(false);
+					sendCommand(json[event.itemIndex].id, json[event.itemIndex].title);
 				}
 				else
 				{
