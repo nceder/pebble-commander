@@ -32,7 +32,7 @@ var ABOUT_TEXT = "Author: Colin Murphy (mrtux@riseup.net)\n\nWebsite: www.mrtux.
 
 // Initial window
 var initWindow = new UI.Card({
-	title: "Pebble Commander",
+	subtitle: "Pebble Commander",
 	scrollable: true,
 	style: 'small',
 	body: "Getting commands list..."
@@ -141,7 +141,6 @@ function runApp() {
 				
 				// Item index 0 (list 1) is the voice command option
 				if (event.sectionIndex === 0) {
-					commandMenu.fullscreen(false);
 					
 					// Dictate voice then run the command if it worked out
 					Voice.dictate('start', true, function(e) {
