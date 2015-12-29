@@ -2,15 +2,9 @@
 
 Pebble Commander is an app for the Pebble smartwatch that turns your Pebble into a remote control for your computer. You can use it to launch your favorite programs, or use it for automation with your own scripts.
 
-## Backend server installation
+## Documentation
 
-To install the server (server.py) you will need to install the following modules:
-
-* Flask (`pip --user install flask`)
-
-### Configuring the backend
-
-Configuration is done in `settings.json`. Documentation on this will be done later.
+Documentation is available [here](http://mrtux.org/projects/commander/docs/).
 
 ## Pebble app
 
