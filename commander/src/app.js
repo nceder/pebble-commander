@@ -27,12 +27,12 @@ var CONTROL_URL = Settings.option('server');
 var AUTH_KEY = Settings.option('authkey');
 var OUTPUT_MODE = Settings.option('commandoutput');
 
-var APP_VERSION = "1.3";
+var APP_VERSION = "1.4";
 var ABOUT_TEXT = "Author: Colin Murphy (mrtux@riseup.net)\n\nWebsite: www.mrtux.org/projects/commander";
 
 // Initial window
 var initWindow = new UI.Card({
-	subtitle: "Pebble Commander",
+	title: "Pebble Commander",
 	scrollable: true,
 	style: 'small',
 	body: "Getting commands list..."
@@ -48,18 +48,12 @@ if (!CONTROL_URL || !AUTH_KEY) {
 	if (platform == 'basalt') {
 		initWindow.backgroundColor('red');
 	}
-  
-	//when you press the select button, restart the app
-	initWindow.on('select', function(event) {
-		runApp();
-	});
 }
 else
 {
 	// all is good, you can run the app
 	runApp();
 }
-
 
 function sendCommand(id, name) {
 	// Show a card showing that the command was executed
@@ -152,7 +146,11 @@ function runApp() {
 						
 						// search for the name in the list of commands
 						for (var i = 0; i < json.length; i++){
-							if (json[i].title == e.transcription) {
+							// put the text in lowercase so it can be matched
+							var transcription = e.transcription.toLowerCase();
+							var itemTitle = json[i].title.toLowerCase();
+							
+							if (itemTitle == transcription || itemTitle.indexOf(transcription) >= 0) {
 								var voiceCommand = json[i].id;
 								console.log('Voice command: ' + voiceCommand);
 								sendCommand(voiceCommand, json[i].title);
@@ -183,7 +181,7 @@ function runApp() {
 							title: "Connection info",
 							items: [
 								{"title": "Server", "subtitle": CONTROL_URL},
-								{"title": "Auth key", "subtitle": AUTH_KEY},
+								{"title": "Auth key", "subtitle": AUTH_KEY}
 							]
 						}]);
 						infoMenu.show();

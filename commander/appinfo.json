@@ -3,8 +3,8 @@
     "capabilities": [
         "configurable"
     ],
-    "companyName": "mrtux@riseup.net",
-    "longName": "Commander",
+    "companyName": "Colin Murphy",
+    "longName": "Commander for Pebble",
     "projectType": "pebblejs",
     "resources": {
         "media": [
@@ -39,7 +39,7 @@
     ],
     "uuid": "0e21144a-7aa3-4c63-a6df-70febaf35e07",
     "versionCode": 1,
-    "versionLabel": "1.3",
+    "versionLabel": "1.4",
     "watchapp": {
         "hiddenApp": false,
         "watchface": false
