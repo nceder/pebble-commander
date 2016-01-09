@@ -27,7 +27,7 @@ var CONTROL_URL = Settings.option('server');
 var AUTH_KEY = Settings.option('authkey');
 var OUTPUT_MODE = Settings.option('commandoutput');
 
-var APP_VERSION = "1.4";
+var APP_VERSION = "1.5";
 var ABOUT_TEXT = "Author: Colin Murphy (mrtux@riseup.net)\n\nWebsite: www.mrtux.org/projects/commander";
 
 // Initial window
