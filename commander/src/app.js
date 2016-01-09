@@ -106,12 +106,23 @@ function runApp() {
 		function(json) {
 			// Data retrieval worked, hide this and show the menu!
 			var commandMenu = new UI.Menu({
-				backgroundColor: '#AAAAAA',
+				backgroundColor: platform == 'aplite' ? 'white' : '#AAAAAA',
 				textColor: 'black',
-				highlightBackgroundColor: 'blue',
+				highlightBackgroundColor: platform == 'aplite' ? 'black' : 'blue',
 				highlightTextColor: 'white',
 				fullscreen: false,
-				sections: [{
+				sections: platform == 'aplite' ? 
+				[{
+					title: 'Commands',
+					items: json
+				},{
+					title: 'Commander',
+					items: [
+						{"title": "Connection info"},
+						{"title": "About", "subtitle": "Version " + APP_VERSION}
+					]
+				}] :
+				[{
 					items: [{"title": "Voice command", "subtitle": "Select then talk"}]	
 				},{
 					title: 'Commands',
