@@ -143,7 +143,8 @@ function runApp() {
 			commandMenu.on('select', function(event) {
 				console.log('Selected item #' + event.itemIndex + ' of section #' + event.sectionIndex);
 				console.log('The item is titled "' + event.item.title + '"');
-				
+				if (platform == 'aplite')
+					event.sectionIndex++;
 				// Item index 0 (list 1) is the voice command option
 				if (event.sectionIndex === 0) {
 					
@@ -180,9 +181,9 @@ function runApp() {
 					// selection index isn't 0 so this is a different type :)
 					
 					var infoMenu = new UI.Menu({
-						backgroundColor: '#AAAAAA',
+						backgroundColor: platform == 'aplite' ? 'white' : '#AAAAAA',
 						textColor: 'black',
-						highlightBackgroundColor: 'blue',
+						highlightBackgroundColor: platform == 'aplite' ? 'black' : 'blue',
 						highlightTextColor: 'white',
 					});
 					
