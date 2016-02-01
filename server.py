@@ -1,10 +1,13 @@
-import subprocess, json
+import os, subprocess, json
 from flask import Flask,Response,Markup
 app = Flask(__name__)
 
 # Load json file
-with open('settings.json') as data_file:
-	JSONData = json.load(data_file)
+__dir__ = os.path.dirname(os.path.abspath(__file__))                
+filepath = os.path.join(__dir__, 'settings.json')                   
+if os.path.isfile(filepath):
+        with open(filepath) as data_file:                           
+                JSONData = json.load(data_file)
 
 # Use the json data for flask
 AUTH_KEY = JSONData["auth_key"]
