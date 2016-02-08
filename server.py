@@ -47,7 +47,8 @@ def runCommandFromList(command):
 	# Execute the command in a way that the output is given to the client not shown in a terminal
 
 	if SHOW_OUTPUT == True:
-		return subprocess.check_output(split)
+		proc = subprocess.Popen(split, stdout=subprocess.PIPE)
+		return proc.stdout.read()
 	else:
 		subprocess.call(split)
 
@@ -99,8 +100,6 @@ def send_json(authkey):
 	# verify authentication key
 	if authkey == AUTH_KEY:
 		# auth key is correct, display file.
-		#with open("settings.json", "r") as jsonfile:
-		#	ResponseText = jsonfile.read()
 		ResponseText = listCommandsAsJSON()
 
 	else:
