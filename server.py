@@ -9,16 +9,25 @@ if os.path.isfile(filepath):
         with open(filepath) as data_file:                           
                 JSONData = json.load(data_file)
 
-# For users using older config files:
-ROOT_WARNING = True
-
 # Use the json data for flask
 AUTH_KEY = JSONData["auth_key"]
 DEBUG = bool(JSONData["debug_mode"])
 SHOW_OUTPUT = bool(JSONData["show_output"])
 HTTP_HOST = JSONData["host"]
 HTTP_PORT = int(JSONData["port"])
-ROOT_WARNING = bool(JSONData["rootwarn"])
+
+# For users using old config files:
+try:
+	ROOT_WARNING = bool(JSONData["rootwarn"])
+except KeyError:
+	print """*** NOTICE ***
+Your config file is outdated. See the documentation for the new settings.
+https://mrtux.org/projects/commander/docs/settings-json.html
+"""
+	ROOT_WARNING = True
+	pass
+	# program will continue to run
+
 
 # Root detection
 if ROOT_WARNING == True:
@@ -28,7 +37,7 @@ This program will not run as root by default for security purposes. If you
 understand the risks of running software as root, set 'rootwarn' in
 settings.json to false.\n
 Exiting."""
-		sys.exit()
+		sys.exit() # Exit the program
 
 #### FUNCTIONS ####
 def listCommandsAsJSON():
