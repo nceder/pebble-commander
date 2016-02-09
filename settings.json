@@ -10,5 +10,6 @@
 		{"title": "Toggle music", "command": "mpc toggle"},
 		{"title": "Start Kodi", "command": "kodi &"},
 		{"title": "Start chromium", "command": "chromium"}
-	]
+	],
+	"rootwarn": true
 }
