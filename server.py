@@ -37,7 +37,7 @@ This program will not run as root by default for security purposes. If you
 understand the risks of running software as root, set 'rootwarn' in
 settings.json to false.\n
 Exiting."""
-		sys.exit() # Exit the program
+		sys.exit(1) # Exit the program
 
 #### FUNCTIONS ####
 def listCommandsAsJSON():
